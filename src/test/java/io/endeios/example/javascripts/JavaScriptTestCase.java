@@ -31,13 +31,16 @@ public class JavaScriptTestCase {
 	private FileReader script;
 	private ExtService service;
 	private SimpleBindings binding;
+	private FileReader script2;
 	private static String SCRIPT = "src/main/javascript/Impl.js";
+	private static String SCRIPT2 = "src/main/javascript/functions.js";
 
 	@Before
 	public void setUp() throws Exception {
 		ScriptEngineManager sem = new ScriptEngineManager();
 		engine = sem.getEngineByName("javascript");
 		script = new FileReader(SCRIPT);
+		script2 = new FileReader(SCRIPT2);
 		List<String>strings = new ArrayList<String>();
 		strings.add("javascript+java");
 		service = new ExtService(strings);
@@ -105,12 +108,14 @@ public class JavaScriptTestCase {
 	
 	@Test
 	public void invoke2() throws ScriptException, NoSuchMethodException {
+		String prg = "function echo(thing){return thing;}";
 		log.info("Testing if javascript is invocable");
-		engine.eval(script,binding);
-		
 		Invocable iengine = (Invocable) engine;
+		Object thiz1 = engine.eval(script2);
 		
-		Object thiz = iengine.invokeFunction("gimmeMyObject",Void.TYPE);
+		Object res = iengine.invokeFunction("echo", 1);
+		log.info("Result ::"+res);
+		Object thiz = iengine.invokeFunction("gimmeMyObject",service);
 		TestInterface aClazz = iengine.getInterface(thiz, TestInterface.class);
 		assertNotNull(iengine);
 		PASS();

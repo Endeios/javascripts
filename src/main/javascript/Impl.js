@@ -36,8 +36,10 @@ myobj = {
 			return retString;
 		}
 };
-
-function gimmeMyObject(){
+function echo(thing){
+	return thing;
+}
+function gimmeMyObject(service){
 	return myobj;
 }
 
