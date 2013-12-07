@@ -1,4 +1,4 @@
-javascripts
-===========
+Studio for scripts
+==================
 
-Scripts for java examples and playground
+MY studio for scripts, featuring javascript integration
