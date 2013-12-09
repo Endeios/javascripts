@@ -36,12 +36,6 @@ myobj = {
 			return retString;
 		}
 };
-function echo(thing){
-	return thing;
-}
-function gimmeMyObject(service){
-	return myobj;
-}
 
 /**
  * RHino returns last object as result!
