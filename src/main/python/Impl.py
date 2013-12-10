@@ -5,22 +5,22 @@ class MyClass(TestInterface):
 		pass
 	def getBean(self):
 			retVal =ABean() 
-			retVal.setName("javascript")
+			retVal.setName("python")
 			retVal.setNumber(101)
 			retVal.setReady(True)
 			return retVal
 		
 		
 	def isActive(self):
-			return true
+			return True
 		
 		
 	def getNum(self):
-			return 101
+			return long(101)
 		
 	def serviceableResult(self):
 			listOfStrings = service.getStrings()
-			print("List is "+listOfStrings+"\n")
+			print("List is "+listOfStrings.toString()+"\n")
 			retString = ""
 			for part in listOfStrings:
 				print("partString is "+part+"\n")
