@@ -142,13 +142,15 @@ public class PythonTestCase {
 		PASS();
 		log.info("Testing if javascript object is really being instantiated");
 		assertTrue(aClazz.isActive());
+		aClazz.getNum();
 		//Does not pass, is innner class java math biginteger 
-		//long expected = Long.parseLong("101");
-		//assertTrue(expected==aClazz.getNum());
-		//PASS();
+		long expected = Long.parseLong("101");
+		assertTrue(expected==aClazz.getNum());
+		PASS();
 		log.info("Testing if java object inside javascript is really being instantiated");
 		ABean myBean = aClazz.getBean();
-		assertTrue(Long.parseLong("101")==myBean.getNumber());
+		int a = 101;
+		assertTrue(a==myBean.getNumber());
 		assertTrue(Boolean.TRUE==myBean.getReady());
 		assertTrue("python".contentEquals(myBean.getName()));
 		PASS();

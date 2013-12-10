@@ -22,7 +22,8 @@ class MyClass(TestInterface):
 		
 		
 	def getNum(self):
-			return Long.parseLong("101")
+			# NOTE Long.parseLong("101") returns a java.math.BigIntger on java side...
+			return Long(101)
 		
 	def serviceableResult(self):
 			listOfStrings = service.getStrings()
