@@ -165,7 +165,7 @@ public class PythonTestCase {
 	}
 	
 	/**
-	 * Awkward, but it gives the illusion we have some sort of edvanced testing 
+	 * Awkward, but it gives the illusion we have some sort of advanced testing 
 	 * framework, and i like the outcome
 	 */
 	void PASS(){
