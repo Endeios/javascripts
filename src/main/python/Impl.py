@@ -29,8 +29,10 @@ class MyClass(TestInterface):
 			print("retString is "+retString+"\n")
 			return retString
 			
+
 myobj = MyClass()
 #if __name__ == "__main__":
 if __name__ == "__builtin__":
 	print "The builtin name is executes"
 	MyClass()
+
