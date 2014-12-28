@@ -42,7 +42,7 @@ public class RubyTestCase {
 	@Before
 	public void setUp() throws Exception {
 		ScriptEngineManager sem = new ScriptEngineManager();
-		engine = sem.getEngineByName("ruby");
+		engine = sem.getEngineByName("jruby");
 		script = new FileReader(SCRIPT);
 		script2 = new FileReader(SCRIPT2);
 		List<String>strings = new ArrayList<String>();
@@ -69,29 +69,34 @@ public class RubyTestCase {
 	}
 
 	@Test
-	@Ignore
 	public void compile() throws ScriptException {
-		log.info("Testing if javascript compiles to bytecode");
+		log.info("Testing if jruby compiles to bytecode");
 		Compilable cengine = (Compilable) engine;
 		CompiledScript cscript = cengine.compile(script);
 		assertNotNull(cscript);
-//		log.info("Testing if javascript compiles to bytecode");
+		log.info("Testing if jruby compiles to bytecode");
 		PASS();
 	}
 	
 	@Test
-	public void invoke() throws ScriptException {
+	@Ignore
+	public void invoke() throws ScriptException, NoSuchMethodException {
 		log.info("Testing if ruby is invocable");
 		Object lol = engine.eval(script,binding);
 		//NOTE no return object for ruby, you have to get it out
 		log.info("Return object is "+lol);
 		//NOTE getting data from bindings used to feed the script
-		Object thiz = binding.get("myobj");
+//		Object thiz = binding.get("myobj");
+		Bindings bindingsPost = engine.getBindings(ScriptContext.ENGINE_SCOPE);
+		
 		Invocable iengine = (Invocable) engine;
+//		Object thiz = engine.get("myobj");
+		Object thiz = iengine.invokeFunction("getMyObject");
+		assertNotNull("Result object should not be null",thiz);
 		TestInterface aClazz = iengine.getInterface(thiz, TestInterface.class);
-		assertNotNull(iengine);
+		assertNotNull(aClazz);
 		PASS();
-		log.info("Testing if python created the class");
+		log.info("Testing if ruby created the class");
 		assertNotNull(aClazz);
 		PASS();
 		log.info("Testing if javascript created the class using the right interface");
@@ -108,10 +113,10 @@ public class RubyTestCase {
 		ABean myBean = aClazz.getBean();
 		assertTrue(Long.parseLong("101")==myBean.getNumber());
 		assertTrue(Boolean.TRUE==myBean.getReady());
-		assertTrue("python".contentEquals(myBean.getName()));
+		assertTrue("jruby".contentEquals(myBean.getName()));
 		PASS();
 		log.info("Testing if javascript instantiatedObject has refernce to binding objects (A.k.a services)");
-		assertTrue("python+java".contentEquals(aClazz.serviceableResult()));
+		assertTrue("ruby+java".contentEquals(aClazz.serviceableResult()));
 		List<String> brandNewStrings = new ArrayList<String>();
 		String e = "a-new-string";
 		brandNewStrings.add(e);
@@ -121,10 +126,10 @@ public class RubyTestCase {
 	}
 	
 	@Test
-	@Ignore
 	public void invoke2() throws ScriptException, NoSuchMethodException {
 		log.info("Testing if javascript is invocable");
 		engine.setBindings(binding2, ScriptContext.ENGINE_SCOPE);
+		engine.getContext().setAttribute("service2", service, ScriptContext.ENGINE_SCOPE);
 		Object thiz1 = engine.eval(script2);
 		Invocable iengine = (Invocable) engine;
 		log.info("Testing that eval result is always null ");
@@ -136,13 +141,13 @@ public class RubyTestCase {
 		TestInterface aClazz = iengine.getInterface(thiz, TestInterface.class);
 		assertNotNull(iengine);
 		PASS();
-		log.info("Testing if javascript created the class");
+		log.info("Testing if jruby created the class");
 		assertNotNull(aClazz);
 		PASS();
-		log.info("Testing if javascript created the class using the right interface");
+		log.info("Testing if jruby created the class using the right interface");
 		assertTrue(aClazz instanceof TestInterface);
 		PASS();
-		log.info("Testing if javascript object is really being instantiated");
+		log.info("Testing if jruby object is really being instantiated");
 		assertTrue(aClazz.isActive());
 		aClazz.getNum();
 		//Does not pass, is innner class java math biginteger 
@@ -154,7 +159,7 @@ public class RubyTestCase {
 		int a = 101;
 		assertTrue(a==myBean.getNumber());
 		assertTrue(Boolean.TRUE==myBean.getReady());
-		assertTrue("python".contentEquals(myBean.getName()));
+		assertTrue("jruby".contentEquals(myBean.getName()));
 		PASS();
 		log.info("Testing if javascript instantiatedObject has refernce to binding objects (A.k.a services)");
 		assertTrue("python+java".contentEquals(aClazz.serviceableResult()));

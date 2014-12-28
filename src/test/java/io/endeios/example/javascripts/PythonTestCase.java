@@ -152,7 +152,7 @@ public class PythonTestCase {
 		int a = 101;
 		assertTrue(a==myBean.getNumber());
 		assertTrue(Boolean.TRUE==myBean.getReady());
-		assertTrue("python".contentEquals(myBean.getName()));
+		assertTrue("jruby".contentEquals(myBean.getName()));
 		PASS();
 		log.info("Testing if javascript instantiatedObject has refernce to binding objects (A.k.a services)");
 		assertTrue("python+java".contentEquals(aClazz.serviceableResult()));
