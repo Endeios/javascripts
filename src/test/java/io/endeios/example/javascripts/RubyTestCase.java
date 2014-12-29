@@ -82,7 +82,8 @@ public class RubyTestCase {
 	@Ignore
 	public void invoke() throws ScriptException, NoSuchMethodException {
 		log.info("Testing if ruby is invocable");
-		Object lol = engine.eval(script,binding);
+		engine.setBindings(binding, ScriptContext.ENGINE_SCOPE);
+		Object lol = engine.eval(script);
 		//NOTE no return object for ruby, you have to get it out
 		log.info("Return object is "+lol);
 		//NOTE getting data from bindings used to feed the script
@@ -90,8 +91,8 @@ public class RubyTestCase {
 		Bindings bindingsPost = engine.getBindings(ScriptContext.ENGINE_SCOPE);
 		
 		Invocable iengine = (Invocable) engine;
-//		Object thiz = engine.get("myobj");
-		Object thiz = iengine.invokeFunction("getMyObject");
+		Object thiz = engine.get("myobj");
+//		Object thiz = iengine.invokeFunction("getMyObject");
 		assertNotNull("Result object should not be null",thiz);
 		TestInterface aClazz = iengine.getInterface(thiz, TestInterface.class);
 		assertNotNull(aClazz);
@@ -115,6 +116,7 @@ public class RubyTestCase {
 		assertTrue(Boolean.TRUE==myBean.getReady());
 		assertTrue("jruby".contentEquals(myBean.getName()));
 		PASS();
+		//If its not invokable engine, it releases the "service" bindings
 		log.info("Testing if javascript instantiatedObject has refernce to binding objects (A.k.a services)");
 		assertTrue("ruby+java".contentEquals(aClazz.serviceableResult()));
 		List<String> brandNewStrings = new ArrayList<String>();
@@ -129,7 +131,6 @@ public class RubyTestCase {
 	public void invoke2() throws ScriptException, NoSuchMethodException {
 		log.info("Testing if javascript is invocable");
 		engine.setBindings(binding2, ScriptContext.ENGINE_SCOPE);
-		engine.getContext().setAttribute("service2", service, ScriptContext.ENGINE_SCOPE);
 		Object thiz1 = engine.eval(script2);
 		Invocable iengine = (Invocable) engine;
 		log.info("Testing that eval result is always null ");
@@ -162,7 +163,7 @@ public class RubyTestCase {
 		assertTrue("jruby".contentEquals(myBean.getName()));
 		PASS();
 		log.info("Testing if javascript instantiatedObject has refernce to binding objects (A.k.a services)");
-		assertTrue("python+java".contentEquals(aClazz.serviceableResult()));
+		assertTrue("ruby+java".contentEquals(aClazz.serviceableResult()));
 		List<String> brandNewStrings = new ArrayList<String>();
 		String e = "a-new-string";
 		brandNewStrings.add(e);

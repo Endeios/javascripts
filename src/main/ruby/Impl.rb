@@ -15,6 +15,7 @@ ABean = Java::IoEndeiosExampleJavascripts::ABean
 #TestInterface = Java::IoEndeiosExampleJavascripts::TestInterface
 
 logger.info("ABean is "+ABean.java_class.to_s)
+logger.info("Service is "+$service.to_s)
 
 class MyClass# < Java::IoEndeiosExampleJavascripts::TestInterface
 	include Java::IoEndeiosExampleJavascripts::TestInterface#io.endeios.example.javascripts.TestInterface
@@ -39,13 +40,15 @@ class MyClass# < Java::IoEndeiosExampleJavascripts::TestInterface
 	end
 
 	def serviceableResult
+		puts "Service is #{$service}"
+		listOfStrings = $service.getStrings()
+		result = ""
+		listOfStrings.each { |element| result = result+element }
+		puts "Result is #{result}"
+		return result
 	end
 end
 #
-myobj = MyClass.new
-logger.info(myobj.java_class.to_s)
+$myobj = MyClass.new
 logger.info("===END===")
 
-def getMyObject()
-	return MyClass.new
-end

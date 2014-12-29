@@ -44,8 +44,10 @@ class MyClass# < Java::IoEndeiosExampleJavascripts::TestInterface
 
 	def serviceableResult
 		listOfStrings = $service.getStrings()
-		logger.info("Jruby sees these strings: "+listOfStrings)
-		return listOfStrings
+		result = ""
+		listOfStrings.each { |element| result = result+element }
+		puts "Result is #{result}"
+		return result
 	end
 end
 #
